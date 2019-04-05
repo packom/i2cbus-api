@@ -1,10 +1,10 @@
-//! Main binary entry point for openapi_client implementation.
+//! Main binary entry point for i2cbus_api implementation.
 
 #![allow(missing_docs)]
 
 // Imports required by this file.
 // extern crate <name of this crate>;
-extern crate openapi_client;
+extern crate i2cbus_api;
 extern crate swagger;
 extern crate hyper;
 extern crate openssl;
@@ -14,7 +14,7 @@ extern crate tokio_tls;
 extern crate clap;
 
 // Imports required by server library.
-// extern crate openapi_client;
+// extern crate i2cbus_api;
 // extern crate swagger;
 extern crate futures;
 extern crate chrono;
@@ -55,7 +55,7 @@ fn main() {
         .get_matches();
 
     let service_fn =
-        openapi_client::server::context::NewAddContext::<_, EmptyContext>::new(
+        i2cbus_api::server::context::NewAddContext::<_, EmptyContext>::new(
             AllowAllAuthenticator::new(
                 server_lib::NewService::new(),
                 "cosmo"

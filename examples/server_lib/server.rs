@@ -1,4 +1,4 @@
-//! Server implementation of openapi_client.
+//! Server implementation of i2cbus_api.
 
 #![allow(unused_imports)]
 
@@ -10,7 +10,7 @@ use std::marker::PhantomData;
 use swagger;
 use swagger::{Has, XSpanIdString};
 
-use openapi_client::{Api, ApiError,
+use i2cbus_api::{Api, ApiError,
                       I2cBusApiResponse,
                       I2cBusListResponse,
                       I2cBusReadByteResponse,
@@ -21,7 +21,7 @@ use openapi_client::{Api, ApiError,
                       I2cBusWriteBytesResponse,
                       I2cBusWriteBytesRegResponse
 };
-use openapi_client::models;
+use i2cbus_api::models;
 
 #[derive(Copy, Clone)]
 pub struct Server<C> {

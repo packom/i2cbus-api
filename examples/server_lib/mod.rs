@@ -1,4 +1,4 @@
-//! Main library entry point for openapi_client implementation.
+//! Main library entry point for i2cbus_api implementation.
 
 mod server;
 
@@ -11,9 +11,9 @@ use std::io;
 use std::clone::Clone;
 use std::marker::PhantomData;
 use hyper;
-use openapi_client;
+use i2cbus_api;
 use swagger::{Has, XSpanIdString};
-use swagger::auth::Authorization;
+//use swagger::auth::Authorization;
 
 pub struct NewService<C>{
     marker: PhantomData<C>
@@ -29,10 +29,10 @@ impl<C> hyper::server::NewService for NewService<C> where C: Has<XSpanIdString> 
     type Request = (hyper::Request, C);
     type Response = hyper::Response;
     type Error = hyper::Error;
-    type Instance = openapi_client::server::Service<server::Server<C>, C>;
+    type Instance = i2cbus_api::server::Service<server::Server<C>, C>;
 
     /// Instantiate a new server.
     fn new_service(&self) -> io::Result<Self::Instance> {
-        Ok(openapi_client::server::Service::new(server::Server::new()))
+        Ok(i2cbus_api::server::Service::new(server::Server::new()))
     }
 }

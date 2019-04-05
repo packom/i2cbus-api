@@ -1,6 +1,6 @@
 #![allow(missing_docs, unused_variables, trivial_casts)]
 
-extern crate openapi_client;
+extern crate i2cbus_api;
 #[allow(unused_extern_crates)]
 extern crate futures;
 #[allow(unused_extern_crates)]
@@ -17,7 +17,7 @@ use swagger::{ContextBuilder, EmptyContext, XSpanIdString, Has, Push, AuthData};
 use futures::{Future, future, Stream, stream};
 use tokio_core::reactor;
 #[allow(unused_imports)]
-use openapi_client::{ApiNoContext, ContextWrapperExt,
+use i2cbus_api::{ApiNoContext, ContextWrapperExt,
                       ApiError,
                       I2cBusApiResponse,
                       I2cBusListResponse,
@@ -64,11 +64,11 @@ fn main() {
                            matches.value_of("port").unwrap());
     let client = if matches.is_present("https") {
         // Using Simple HTTPS
-        openapi_client::Client::try_new_https(core.handle(), &base_url, "examples/ca.pem")
+        i2cbus_api::Client::try_new_https(core.handle(), &base_url, "examples/ca.pem")
             .expect("Failed to create HTTPS client")
     } else {
         // Using HTTP
-        openapi_client::Client::try_new_http(core.handle(), &base_url)
+        i2cbus_api::Client::try_new_http(core.handle(), &base_url)
             .expect("Failed to create HTTP client")
     };
 
