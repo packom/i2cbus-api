@@ -1,6 +1,6 @@
 [package]
 name = "i2cbus-api"
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Piers Finlayson <piers@packom.net>"]
 license = "GPL-3.0-or-later"
 repository = "https://github.com/packom/i2cbus-api"
@@ -10,10 +10,10 @@ description = "HTTP RESTful API and skeleton server/client implement for I2C bus
 readme = "README.md"
 keywords = ["i2c","bus","openapi","swagger","http"]
 categories = ["api-bindings","hardware-support","network-programming","embedded","web-programming"]
-travis-ci = { repository = "packom/i2cbus-api", branch = "master" }
 
 [badges]
 maintenance = { status = "actively-developed" }
+travis-ci = { repository = "packom/i2cbus-api", branch = "master" }
 
 [features]
 default = ["client", "server"]

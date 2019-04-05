@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: I2C Bus API
-  version: 0.1.4
+  version: 0.1.5
 paths:
   /i2c/api:
     get:
