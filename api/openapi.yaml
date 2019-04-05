@@ -1,0 +1,485 @@
+openapi: 3.0.1
+info:
+  title: I2C Bus API
+  version: 0.1.2
+paths:
+  /i2c/api:
+    get:
+      description: Returns this API specification
+      operationId: i2c_bus_api
+      responses:
+        200:
+          content:
+            text/x-yaml:
+              schema:
+                $ref: '#/components/schemas/yaml'
+          description: OK
+        404:
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/error'
+          description: File not found
+  /i2c/buslist:
+    get:
+      description: Returns the available I2C buses
+      operationId: i2c_bus_list
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/i2c_bus_list'
+                type: array
+          description: OK
+  /i2c/{busId}/write/byte/reg/{addr}/{reg}/{value}:
+    post:
+      description: Writes the specified value to the specified register, using the specified I2C slave address, using the specified bus
+      operationId: i2c_bus_write_byte_reg
+      parameters:
+      - description: I2C bus to write to
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to direct this write to
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      - description: Register to write value to
+        explode: false
+        in: path
+        name: reg
+        required: true
+        schema:
+          $ref: '#/components/schemas/reg'
+        style: simple
+      - description: Value to write to the register
+        explode: false
+        in: path
+        name: value
+        required: true
+        schema:
+          $ref: '#/components/schemas/value'
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_ok'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/write/byte/{addr}/{value}:
+    post:
+      description: Writes the specified value, using the specified I2C slave address, using the specified bus.  Does not specify the register to write the value to
+      operationId: i2c_bus_write_byte
+      parameters:
+      - description: I2C bus to write to
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to direct this write to
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      - description: Value to write to the register
+        explode: false
+        in: path
+        name: value
+        required: true
+        schema:
+          $ref: '#/components/schemas/value'
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_ok'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/write/bytes/reg/{addr}/{reg}:
+    post:
+      description: Writes the specified bytes starting at the specified register, using the specified I2C slave address, using the specified bus
+      operationId: i2c_bus_write_bytes_reg
+      parameters:
+      - description: I2C bus to write to
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to direct this write to
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      - description: Register to write value to
+        explode: false
+        in: path
+        name: reg
+        required: true
+        schema:
+          $ref: '#/components/schemas/reg'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/values'
+        description: Values to write
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_ok'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/write/bytes/{addr}:
+    post:
+      description: Writes the specified bytes using the specified I2C slave address, using the specified bus
+      operationId: i2c_bus_write_bytes
+      parameters:
+      - description: I2C bus to write to
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to direct this write to
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/values'
+        description: Values to write
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_ok'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/read/reg/{addr}/{reg}/{numBytes}:
+    get:
+      description: Reads the specified number of bytes starting at the specified register (by writing that register to the bus before the read), using the specified I2C slave address, using the specified bus
+      operationId: i2c_bus_read_reg
+      parameters:
+      - description: I2C bus to read from
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to read from
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      - description: Register to read value from
+        explode: false
+        in: path
+        name: reg
+        required: true
+        schema:
+          $ref: '#/components/schemas/reg'
+        style: simple
+      - description: Number of bytes to read
+        explode: false
+        in: path
+        name: numBytes
+        required: true
+        schema:
+          $ref: '#/components/schemas/numBytes'
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_read'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/read/byte/{addr}:
+    get:
+      description: Reads a byte using the specified I2C slave address, using the specified bus.  Does not write the register to read from first
+      operationId: i2c_bus_read_byte
+      parameters:
+      - description: I2C bus to read from
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to read from
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_read'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+  /i2c/{busId}/read/bytes/{addr}/{numBytes}:
+    get:
+      description: Reads a number of bytes using the specified I2C slave address, using the specified bus.  Does not write the register to read from first
+      operationId: i2c_bus_read_bytes
+      parameters:
+      - description: I2C bus to read from
+        explode: false
+        in: path
+        name: busId
+        required: true
+        schema:
+          $ref: '#/components/schemas/busId'
+        style: simple
+      - description: I2C slave address to read from
+        explode: false
+        in: path
+        name: addr
+        required: true
+        schema:
+          $ref: '#/components/schemas/addr'
+        style: simple
+      - description: Number of bytes to read
+        explode: false
+        in: path
+        name: numBytes
+        required: true
+        schema:
+          $ref: '#/components/schemas/numBytes'
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_read'
+          description: OK
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_arg'
+          description: Bad Request
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/i2c_bus_error'
+          description: Transaction Failed
+components:
+  schemas:
+    i2c_bus_list:
+      description: A list of available I2C buses
+      example:
+        path: path
+        id: 0
+      properties:
+        path:
+          type: string
+        id:
+          format: int32
+          type: integer
+    i2c_byte:
+      description: A byte read from the I2C bus
+      example: 128
+      format: int32
+      type: integer
+    i2c_bus_ok:
+      description: A successful response from the I2C transaction
+      example:
+        ok: 1
+      properties:
+        ok:
+          format: int32
+          type: integer
+    i2c_bus_read:
+      description: A successful read response
+      example:
+        ok: 1
+        values:
+        - 128
+        - 128
+      properties:
+        ok:
+          format: int32
+          type: integer
+        values:
+          items:
+            $ref: '#/components/schemas/i2c_byte'
+          type: array
+    i2c_bus_error:
+      description: An error response from the I2C transaction
+      example:
+        error: 5
+        description: EIO
+      properties:
+        error:
+          format: int32
+          type: integer
+        description:
+          type: string
+    i2c_bus_arg:
+      description: Indicates a malformed request, likely a badly formatted or invalid argument)
+      example:
+        arg: busId
+        description: Invalid value 1 (no such bus)
+      properties:
+        arg:
+          type: string
+        description:
+          type: string
+    yaml:
+      description: A YAML file
+      type: string
+    error:
+      description: Some error text
+      type: string
+    busId:
+      description: A valid bus ID as returned by i2c_bus_list
+      format: int32
+      type: integer
+    addr:
+      description: A valid I2C slave address
+      format: int32
+      type: integer
+    reg:
+      description: An I2C slave device register
+      format: int32
+      type: integer
+    value:
+      description: A value to read from or write to the I2C bus
+      format: int32
+      type: integer
+    numBytes:
+      description: Number of bytes to write or read
+      format: int32
+      type: integer
+    values:
+      description: Bytes to write to the bus
+      example:
+        values:
+        - 128
+        - 128
+      properties:
+        values:
+          items:
+            $ref: '#/components/schemas/i2c_byte'
+          type: array
+

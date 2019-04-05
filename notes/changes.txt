@@ -1,0 +1,246 @@
+Move over api\ examples\ src\ dirs
+
+Search and replace models:: with models::
+(Fix this instance back up!)
+
+src/lib.rs line 20 (before extern crate swagger)
+#[macro_use]
+
+In src/client/mod.rs:
+
+~ line 294 change to:
+
+                            I2cBusApiResponse::OK(models::Yaml::from(body))
+
+~ line 312:
+
+                            I2cBusApiResponse::FileNotFound(models::Error::from(body))
+
+In src/server/mod.rs:
+
+Add new macro at ~ line 146
+
+macro_rules! parse_error {
+    ($ctx:expr, $arg: expr, $mt:ident, $e: expr) => {
+        {
+            let mut response = Response::new();
+            response.headers_mut().set(XSpanId((&$ctx as &Has<XSpanIdString>).get().0.to_string()));
+            response.set_status(StatusCode::BadRequest);
+            response.headers_mut().set(ContentType(mimetypes::responses::$mt.clone()));
+            let http_err = models::I2cBusArg {
+                arg: Some($arg.to_string()),
+                description: Some($e),
+            };
+            let body = serde_json::to_string(&http_err).expect("impossible to fail to serialize");
+            response.set_body(body);
+            return Box::new(future::ok(response))
+        }
+    };
+}
+
+~line 217:
+
+                                                    response.set_body(String::from(body));
+
+~line 230:
+
+                                                    response.set_body(String::from(body));
+
+
+The error branches like:
+
+                        Err(e) => parse_error!(
+                            context,
+                            "busId",
+                            I2C_BUS_READ_BYTE_BAD_REQUEST,
+                            format!("Couldn't parse path parameter, {}", e)
+                        ),
+
+                    Err(e) => parse_error!(
+                        context,
+                        "busId",
+                        I2C_BUS_READ_BYTE_BAD_REQUEST,
+                        format!("Couldn't percent-decode path parameter as UTF-8: {}", e)
+                    ),
+
+In models.rs 
+
+Add:
+
+// Manually added
+
+use std::str::FromStr;
+use std::num::ParseIntError;
+
+impl FromStr for Addr {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<i32>() {
+            Ok(val) => Ok(Addr(val)),
+            Err(e) => Err(e)
+        }
+    }
+}
+
+impl FromStr for BusId {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<i32>() {
+            Ok(val) => Ok(BusId(val)),
+            Err(e) => Err(e)
+        }
+    }
+}
+
+impl FromStr for Reg {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<i32>() {
+            Ok(val) => Ok(Reg(val)),
+            Err(e) => Err(e)
+        }
+    }
+}
+
+impl FromStr for Value {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<i32>() {
+            Ok(val) => Ok(Value(val)),
+            Err(e) => Err(e)
+        }
+    }
+}
+
+impl FromStr for NumBytes {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.parse::<i32>() {
+            Ok(val) => Ok(NumBytes(val)),
+            Err(e) => Err(e)
+        }
+    }
+}
+
+impl<'a> ::std::convert::From<&'a u8> for I2cByte {
+    fn from(x: &u8) -> Self {
+        I2cByte(*x as i32)
+    }
+}
+
+
+
+
+And at end of src/lib.rs add:
+
+#[derive(Debug)]
+pub enum ExtraInfoOk {
+    Yaml ( models::Yaml ),
+    List ( Vec<models::I2cBusList> ),
+    Read ( models::I2cBusRead ),
+    OK ( models::I2cBusOk ),
+}
+
+#[derive(Debug)]
+pub enum ExtraInfoError {
+    FileNotFound ( models::Error ),
+    Arg ( models::I2cBusArg ),
+    Error ( models::I2cBusError ),
+}
+
+pub trait OkOrOther {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>;
+}
+
+impl OkOrOther for I2cBusApiResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError> {
+        match *self {
+            I2cBusApiResponse::OK(ref x) => Ok(ExtraInfoOk::Yaml(x.clone())),
+            I2cBusApiResponse::FileNotFound(ref x) => Err(ExtraInfoError::FileNotFound(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusListResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusListResponse::OK(ref x) => Ok(ExtraInfoOk::List(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusReadByteResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusReadByteResponse::OK(ref x) => Ok(ExtraInfoOk::Read(x.clone())),
+            I2cBusReadByteResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusReadByteResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusReadBytesResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusReadBytesResponse::OK(ref x) => Ok(ExtraInfoOk::Read(x.clone())),
+            I2cBusReadBytesResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusReadBytesResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusReadRegResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusReadRegResponse::OK(ref x) => Ok(ExtraInfoOk::Read(x.clone())),
+            I2cBusReadRegResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusReadRegResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusWriteByteResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusWriteByteResponse::OK(ref x) => Ok(ExtraInfoOk::OK(x.clone())),
+            I2cBusWriteByteResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusWriteByteResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusWriteByteRegResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusWriteByteRegResponse::OK(ref x) => Ok(ExtraInfoOk::OK(x.clone())),
+            I2cBusWriteByteRegResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusWriteByteRegResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusWriteBytesResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusWriteBytesResponse::OK(ref x) => Ok(ExtraInfoOk::OK(x.clone())),
+            I2cBusWriteBytesResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusWriteBytesResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
+impl OkOrOther for I2cBusWriteBytesRegResponse {
+    fn ok_or_other(&self) -> Result<ExtraInfoOk, ExtraInfoError>{
+        match *self {
+            I2cBusWriteBytesRegResponse::OK(ref x) => Ok(ExtraInfoOk::OK(x.clone())),
+            I2cBusWriteBytesRegResponse::BadRequest(ref x) => Err(ExtraInfoError::Arg(x.clone())),
+            I2cBusWriteBytesRegResponse::TransactionFailed(ref x) => Err(ExtraInfoError::Error(x.clone())),
+        }
+    }
+}
+
