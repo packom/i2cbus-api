@@ -11,6 +11,9 @@ readme = "README.md"
 keywords = ["i2c","bus","openapi","swagger","http"]
 categories = ["api-bindings","hardware-support","network-programming","embedded","web-programming"]
 
+[badges]
+maintenance = { status = "actively-developed" }
+
 [features]
 default = ["client", "server"]
 client = ["serde_json",  "serde_ignored", "hyper", "hyper-tls", "native-tls", "openssl", "tokio-core", "url", "uuid"]
