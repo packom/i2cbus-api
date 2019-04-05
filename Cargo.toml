@@ -9,6 +9,7 @@ homepage = "https://www.packom.net"
 description = "HTTP RESTful API and skeleton server/client implement for I2C bus control"
 readme = "README.md"
 keywords = ["i2c","bus","openapi","swagger","http"]
+categories = ["api-bindings","hardware-support","network-programming","embedded","web-programming"]
 
 [features]
 default = ["client", "server"]
