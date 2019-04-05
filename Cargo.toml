@@ -7,6 +7,7 @@ repository = "https://github.com/packom/i2cbus-api"
 documentation = "https://github.com/packom/i2cbus-api"
 homepage = "https://www.packom.net"
 description = "HTTP RESTful API and skeleton server/client implement for I2C bus control"
+readme = "README.md"
 
 [features]
 default = ["client", "server"]
