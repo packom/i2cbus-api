@@ -9,10 +9,10 @@
 //! To use, create a new handle then call the methods on this object:
 //!
 //! ```
-//! let handle = Handle::new("http://ip:port");
-//! let rsp = handle.write_bytes(...);
+//! // let handle = Handle::new("http://ip:port");
+//! // let rsp = handle.write_bytes(...);
 //! // Handle response
-//! ...
+//! // ...
 //! ```
 //!
 //! Calls can of course be chained together
