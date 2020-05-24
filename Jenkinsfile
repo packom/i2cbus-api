@@ -12,7 +12,7 @@ pipeline {
                         sudo apt install -y default-jdk maven && \
                         export JAVA_HOME=/usr/lib/jvm/default-java && \
                         cd ~/builds && \
-                        git clone https://@github.com/OpenAPITools/openapi-generator && \
+                        git clone https://github.com/OpenAPITools/openapi-generator && \
                         cd ./openapi-generator && \
                         mvn clean install && \
                         cd ~/builds && \
