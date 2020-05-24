@@ -1,6 +1,6 @@
 [package]
 name = "i2cbus-api"
-version = "0.1.5"
+version = 0.1.5
 authors = ["Piers Finlayson <piers@packom.net>"]
 license = "GPL-3.0-or-later"
 repository = "https://github.com/packom/i2cbus-api"

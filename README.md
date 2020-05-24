@@ -26,7 +26,7 @@ To see how to make this your own, look here:
 [README]((https://openapi-generator.tech))
 
 - API version: 0.1.5
-- Build date: 2020-05-24T14:26:58.838005Z[Etc/UTC]
+- Build date: 2020-05-24T15:12:15.681355Z[Etc/UTC]
 
 
 
