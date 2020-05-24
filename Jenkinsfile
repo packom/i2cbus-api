@@ -4,7 +4,7 @@ pipeline {
         docker { image 'piersfinlayson/openapi-gen-amd64:latest' }
     }
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github.packom', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
