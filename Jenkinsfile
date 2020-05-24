@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                withCredentials([string(credentialsId: 'github.packom', passwordVariable: 'PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: 'github.packom', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
                         sudo apt update
                         sudo apt install -y default-jdk maven && \
@@ -16,7 +16,7 @@ pipeline {
                         cd ./openapi-generator && \
                         mvn clean install && \
                         cd ~/builds && \
-                        git clone https://packom:$PASSWORD@github.com/packom/i2cbus-api && \
+                        git clone https://USERNAME:PASSWORD@github.com/packom/i2cbus-api && \
                         java -jar ~/builds/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./i2cbus-api/api/openapi.yaml -g rust-server -o ./i2cbus-api
                         cd i2cbus-api && \
                         echo "# i2cbus-api
