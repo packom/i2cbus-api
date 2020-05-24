@@ -1,20 +1,13 @@
 // https://www.jenkins.io/doc/book/pipeline/docker/
 pipeline {
     agent {
-        docker { image 'piersfinlayson/build:latest' }
+        docker { image 'piersfinlayson/openapi-gen:latest' }
     }
     stages {
         stage('Test') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'github.packom', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh '''
-                        sudo apt update
-                        sudo apt install -y default-jdk maven && \
-                        export JAVA_HOME=/usr/lib/jvm/default-java && \
-                        cd ~/builds && \
-                        git clone https://github.com/OpenAPITools/openapi-generator && \
-                        cd ./openapi-generator && \
-                        mvn clean install && \
                         cd ~/builds && \
                         git clone https://packom:$PASSWORD@github.com/packom/i2cbus-api && \
                         java -jar ~/builds/openapi-generator/modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -i ./i2cbus-api/api/openapi.yaml -g rust-server -o ./i2cbus-api
