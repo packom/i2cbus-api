@@ -2,19 +2,21 @@ openapi: 3.0.1
 info:
   title: I2C Bus API
   version: 0.1.5
+servers:
+- url: /
 paths:
   /i2c/api:
     get:
       description: Returns this API specification
       operationId: i2c_bus_api
       responses:
-        200:
+        "200":
           content:
             text/x-yaml:
               schema:
                 $ref: '#/components/schemas/yaml'
           description: OK
-        404:
+        "404":
           content:
             text/plain:
               schema:
@@ -25,7 +27,7 @@ paths:
       description: Returns the available I2C buses
       operationId: i2c_bus_list
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
@@ -35,7 +37,8 @@ paths:
           description: OK
   /i2c/{busId}/write/byte/reg/{addr}/{reg}/{value}:
     post:
-      description: Writes the specified value to the specified register, using the specified I2C slave address, using the specified bus
+      description: Writes the specified value to the specified register, using the
+        specified I2C slave address, using the specified bus
       operationId: i2c_bus_write_byte_reg
       parameters:
       - description: I2C bus to write to
@@ -71,19 +74,19 @@ paths:
           $ref: '#/components/schemas/value'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_ok'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -91,7 +94,9 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/write/byte/{addr}/{value}:
     post:
-      description: Writes the specified value, using the specified I2C slave address, using the specified bus.  Does not specify the register to write the value to
+      description: Writes the specified value, using the specified I2C slave address,
+        using the specified bus.  Does not specify the register to write the value
+        to
       operationId: i2c_bus_write_byte
       parameters:
       - description: I2C bus to write to
@@ -119,19 +124,19 @@ paths:
           $ref: '#/components/schemas/value'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_ok'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -139,7 +144,8 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/write/bytes/reg/{addr}/{reg}:
     post:
-      description: Writes the specified bytes starting at the specified register, using the specified I2C slave address, using the specified bus
+      description: Writes the specified bytes starting at the specified register,
+        using the specified I2C slave address, using the specified bus
       operationId: i2c_bus_write_bytes_reg
       parameters:
       - description: I2C bus to write to
@@ -174,19 +180,19 @@ paths:
         description: Values to write
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_ok'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -194,7 +200,8 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/write/bytes/{addr}:
     post:
-      description: Writes the specified bytes using the specified I2C slave address, using the specified bus
+      description: Writes the specified bytes using the specified I2C slave address,
+        using the specified bus
       operationId: i2c_bus_write_bytes
       parameters:
       - description: I2C bus to write to
@@ -221,19 +228,19 @@ paths:
         description: Values to write
         required: true
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_ok'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -241,7 +248,9 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/read/reg/{addr}/{reg}/{numBytes}:
     get:
-      description: Reads the specified number of bytes starting at the specified register (by writing that register to the bus before the read), using the specified I2C slave address, using the specified bus
+      description: Reads the specified number of bytes starting at the specified register
+        (by writing that register to the bus before the read), using the specified
+        I2C slave address, using the specified bus
       operationId: i2c_bus_read_reg
       parameters:
       - description: I2C bus to read from
@@ -277,19 +286,19 @@ paths:
           $ref: '#/components/schemas/numBytes'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_read'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -297,7 +306,8 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/read/byte/{addr}:
     get:
-      description: Reads a byte using the specified I2C slave address, using the specified bus.  Does not write the register to read from first
+      description: Reads a byte using the specified I2C slave address, using the specified
+        bus.  Does not write the register to read from first
       operationId: i2c_bus_read_byte
       parameters:
       - description: I2C bus to read from
@@ -317,19 +327,19 @@ paths:
           $ref: '#/components/schemas/addr'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_read'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -337,7 +347,8 @@ paths:
           description: Transaction Failed
   /i2c/{busId}/read/bytes/{addr}/{numBytes}:
     get:
-      description: Reads a number of bytes using the specified I2C slave address, using the specified bus.  Does not write the register to read from first
+      description: Reads a number of bytes using the specified I2C slave address,
+        using the specified bus.  Does not write the register to read from first
       operationId: i2c_bus_read_bytes
       parameters:
       - description: I2C bus to read from
@@ -365,19 +376,19 @@ paths:
           $ref: '#/components/schemas/numBytes'
         style: simple
       responses:
-        200:
+        "200":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_read'
           description: OK
-        400:
+        "400":
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/i2c_bus_arg'
           description: Bad Request
-        502:
+        "502":
           content:
             application/json:
               schema:
@@ -436,7 +447,8 @@ components:
         description:
           type: string
     i2c_bus_arg:
-      description: Indicates a malformed request, likely a badly formatted or invalid argument)
+      description: Indicates a malformed request, likely a badly formatted or invalid
+        argument)
       example:
         arg: busId
         description: Invalid value 1 (no such bus)
