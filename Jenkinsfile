@@ -1,7 +1,7 @@
 // https://www.jenkins.io/doc/book/pipeline/docker/
 pipeline {
     agent {
-        docker { image 'piersfinlayson/openapi-gen-amd64:latest' }
+        docker { image 'piersfinlayson/openapi-gen-amd64:0.0.1' }
     }
     stages {
         stage('Build') {
