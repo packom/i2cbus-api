@@ -2,6 +2,7 @@
 name = "i2cbus-api"
 version = "0.1.5"
 authors = ["Piers Finlayson <piers@packom.net>"]
+edition = "2018"
 license = "GPL-3.0-or-later"
 repository = "https://github.com/packom/i2cbus-api"
 documentation = "https://github.com/packom/i2cbus-api"
