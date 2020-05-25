@@ -1,4 +1,4 @@
-//! Main library entry point for openapi_client implementation.
+//! Main library entry point for i2cbus_api implementation.
 
 #![allow(unused_imports)]
 
@@ -29,7 +29,7 @@ use tokio_openssl::SslAcceptorExt;
 #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "ios")))]
 use openssl::ssl::{SslAcceptor, SslFiletype, SslMethod};
 
-use openapi_client::models;
+use i2cbus_api::models;
 
 #[cfg(not(any(target_os = "macos", target_os = "windows", target_os = "ios")))]
 /// Builds an SSL implementation for Simple HTTPS from some hard-coded file names
@@ -43,7 +43,7 @@ pub fn create(addr: &str, https: bool) -> Box<dyn Future<Item = (), Error = ()> 
     let service_fn = MakeAllowAllAuthenticator::new(service_fn, "cosmo");
 
     let service_fn =
-        openapi_client::server::context::MakeAddContext::<_, EmptyContext>::new(
+        i2cbus_api::server::context::MakeAddContext::<_, EmptyContext>::new(
             service_fn
         );
 
@@ -103,7 +103,7 @@ impl<C> Server<C> {
 }
 
 
-use openapi_client::{
+use i2cbus_api::{
     Api,
     ApiError,
     I2cBusApiResponse,
@@ -116,7 +116,7 @@ use openapi_client::{
     I2cBusWriteBytesResponse,
     I2cBusWriteBytesRegResponse,
 };
-use openapi_client::server::MakeService;
+use i2cbus_api::server::MakeService;
 
 impl<C> Api<C> for Server<C> where C: Has<XSpanIdString>{
     fn i2c_bus_api(

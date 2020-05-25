@@ -4,7 +4,7 @@
 #[allow(unused_imports)]
 use futures::{Future, future, Stream, stream};
 #[allow(unused_imports)]
-use openapi_client::{Api, ApiNoContext, Client, ContextWrapperExt, models,
+use i2cbus_api::{Api, ApiNoContext, Client, ContextWrapperExt, models,
                       ApiError,
                       I2cBusApiResponse,
                       I2cBusListResponse,

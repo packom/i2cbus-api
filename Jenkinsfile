@@ -40,7 +40,9 @@ categories = [\\"api-bindings\\",\\"hardware-support\\",\\"network-programming\\
 " > /tmp/Cargo.toml && \
                         tail -n +9 ./Cargo.toml >> /tmp/Cargo.toml && \
                         cp /tmp/Cargo.toml ./ && \
+                        find examples -name *.rs -print0 | xargs -0 sed -i 's/openapi_client/i2cbus_api/' && \
                         cargo build && \
+                        cargo test && \
                         git config --global user.email "piers@packom.net" && \
                         git config --global user.name "Piers Finlayson" && \
                         git status && \
