@@ -107,7 +107,7 @@ if [ $DIFF_SIZE != 0 ]
 then
     if [ $NEWV == $OLDV ]
     then
-        cargo yank --token $PASSWORD --version $OLDV
+        cargo yank --token $PASSWORD --vers $OLDV
     else
         echo "New version is different from old version - nothing to yank"
     fi
