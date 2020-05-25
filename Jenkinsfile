@@ -105,12 +105,6 @@ categories = [\\"api-bindings\\",\\"hardware-support\\",\\"network-programming\\
                         NEWV=$(cat /tmp/new_version) && \
 if [ $DIFF_SIZE != 0 ]
 then
-    if [ $NEWV == $OLDV ]
-    then
-        cargo yank --token $PASSWORD --vers $OLDV
-    else
-        echo "New version is different from old version - nothing to yank"
-    fi
     cargo publish --token $PASSWORD 
 else
     echo "No changes to publish"
