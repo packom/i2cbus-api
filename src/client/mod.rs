@@ -1367,3 +1367,6 @@ impl<C, F> Api<C> for Client<F> where
     }
 
 }
+
+#[allow(dead_code)]
+pub mod remote;
