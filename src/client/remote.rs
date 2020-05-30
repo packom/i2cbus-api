@@ -115,7 +115,7 @@ macro_rules! make_api_call {
         pub fn $fn(
             &self,
             $( $arg: $arg_ty, )*
-        ) -> Box<dyn Future<Item = $fn_ret, Error = ApiError>> {
+        ) -> Box<dyn Future<Item = $fn_ret, Error = ApiError> + Send> {
             let (rsp_tx, rsp_rx) = oneshot::channel::<Response>();
             match self.sender.unbounded_send(Request {
                 ty: RequestType::$ty {
@@ -279,7 +279,7 @@ impl Handle {
 
 fn handle_receiver(
     rsp: oneshot::Receiver<Response>,
-) -> Box<dyn Future<Item = I2cBusWriteBytesResponse, Error = ApiError>> {
+) -> Box<dyn Future<Item = I2cBusWriteBytesResponse, Error = ApiError> + Send> {
     Box::new(rsp.then(|r| {
         if true {
             return Box::new(futures::future::ok(
