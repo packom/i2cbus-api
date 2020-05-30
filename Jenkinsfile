@@ -56,6 +56,7 @@ categories = [\\"api-bindings\\",\\"hardware-support\\",\\"network-programming\\
 " > /tmp/Cargo.toml && \
                     tail -n +9 ./Cargo.toml >> /tmp/Cargo.toml && \
                     cp /tmp/Cargo.toml ./ && \
+                    sed -i 's/# Client-specific/# Client-specific\\ntokio-core = \\"0\\.1\\.17\\"/' Cargo.toml && \
                     find examples -name *.rs -print0 | xargs -0 sed -i 's/openapi_client/i2cbus_api/' && \
                     cat mods/lib.rs >> src/lib.rs && \
                     cat mods/client_mod.rs >> src/client/mod.rs && \
