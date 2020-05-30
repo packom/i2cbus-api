@@ -25,9 +25,6 @@ use url::percent_encoding::{utf8_percent_encode, PATH_SEGMENT_ENCODE_SET, QUERY_
 use crate::models;
 use crate::header;
 
-#[allow(dead_code)]
-pub mod remote;
-
 url::define_encode_set! {
     /// This encode set is used for object IDs
     ///
