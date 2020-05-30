@@ -9,7 +9,7 @@ pub use swagger::{ApiError, ContextWrapper};
 pub use futures::Future;
 
 pub const BASE_PATH: &'static str = "";
-pub const API_VERSION: &'static str = "0.1.8";
+pub const API_VERSION: &'static str = "0.1.9";
 
 #[derive(Debug, PartialEq)]
 #[must_use]
