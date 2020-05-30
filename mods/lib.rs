@@ -1,7 +1,4 @@
 
-#[cfg(any(feature = "client", feature = "server"))]
-pub(crate) mod header;
-
 #[derive(Debug)]
 pub enum ExtraInfoOk {
     Yaml ( models::Yaml ),
