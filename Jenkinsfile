@@ -57,6 +57,8 @@ categories = [\\"api-bindings\\",\\"hardware-support\\",\\"network-programming\\
                     tail -n +9 ./Cargo.toml >> /tmp/Cargo.toml && \
                     cp /tmp/Cargo.toml ./ && \
                     find examples -name *.rs -print0 | xargs -0 sed -i 's/openapi_client/i2cbus_api/' && \
+                    cat mods/lib.rs >> src/lib.rs && \
+                    cat mods/remote.rs > src/client/remote.rs && \
                     git diff -- . ':(exclude)README.md' > /tmp/diff && \
                     cat /tmp/diff && \
                     echo `stat --printf="%s" /tmp/diff` > /tmp/diff_size && \
